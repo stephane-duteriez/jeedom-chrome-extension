@@ -1,0 +1,11 @@
+.equipment-list {
+  display: flex;
+}
+
+.equipment-list div {
+  flex: 1;
+}
+
+.equipment-card {
+  margin: 20px;
+}
