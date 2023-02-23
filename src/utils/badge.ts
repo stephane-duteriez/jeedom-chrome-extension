@@ -1,9 +1,9 @@
-import { Command, fetchCommande } from "./api"
+import { Command, fetchCommandeJSONRPC } from "./api"
 
 const setBadge = (cmd: Command): void => {
-  fetchCommande(cmd.id).then((data) => {
+  fetchCommandeJSONRPC(cmd.id).then((data) => {
     chrome.action.setBadgeText({
-      text: `${data}`,
+      text: `${data.currentValue}`,
     })
   })
 }

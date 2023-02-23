@@ -1,9 +1,4 @@
-import {
-  fetchCommande,
-  fetchJeedomData,
-  subTypeCommands,
-  typeCommands,
-} from "../utils/api"
+import { subTypeCommands, typeCommands } from "../utils/api"
 import { setBadge } from "../utils/badge"
 import {
   getStoredCommandBadge,

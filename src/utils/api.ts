@@ -1,5 +1,6 @@
 // fetch data from jeedom
 
+import { JSONRPCClient } from "json-rpc-2.0"
 import { jeedomUrl, apiKey } from "../local"
 
 export { jeedomUrl }
@@ -65,13 +66,39 @@ const fetchJeedomData = async (): Promise<JeedomObject[]> => {
   return data
 }
 
-const fetchCommande = async (idCommand: string): Promise<string> => {
-  const res = await fetch(`${baseUrl}&type=cmd&id=${idCommand}`)
-  if (!res.ok) {
-    throw new Error("Error while fetching jeedom data")
+const client = new JSONRPCClient((jsonRPCRequest = {}) => {
+  jsonRPCRequest = {
+    ...jsonRPCRequest,
+    params: {
+      ...jsonRPCRequest.params,
+      apikey: apiKey,
+    },
   }
-  const data = await res.json()
-  return data
+  return fetch(`${jeedomUrl}/core/api/jeeApi.php`, {
+    method: "POST",
+    body: JSON.stringify(jsonRPCRequest),
+  }).then((response) => {
+    if (response.status === 200) {
+      // Use client.receive when you received a JSON-RPC response.
+      return response
+        .json()
+        .then((jsonRPCResponse) => client.receive(jsonRPCResponse))
+    } else if (jsonRPCRequest.id !== undefined) {
+      return Promise.reject(new Error(response.statusText))
+    }
+  })
+})
+
+const fetchJeedomDataJSONRPC = async (): Promise<JeedomObject[]> => {
+  return client.request("jeeObject::full")
 }
 
-export { fetchJeedomData, fetchCommande }
+const fetchCommandeJSONRPC = async (
+  idCommand: string
+): Promise<{
+  currentValue: string
+}> => {
+  return client.request("cmd::byId", { id: idCommand })
+}
+
+export { fetchJeedomDataJSONRPC, fetchCommandeJSONRPC }

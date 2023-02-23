@@ -1,6 +1,6 @@
 import "./DetailPopupCommand.css"
 import React from "react"
-import { Command, fetchCommande } from "../../utils/api"
+import { Command, fetchCommandeJSONRPC } from "../../utils/api"
 import { useQuery } from "react-query"
 
 interface DetailCommandProps {
@@ -11,7 +11,7 @@ const DetailPopupCommand: (DetailCommandProps) => JSX.Element = ({
   command,
 }) => {
   const { data: currentState } = useQuery(["command", { id: command.id }], () =>
-    fetchCommande(command.id)
+    fetchCommandeJSONRPC(command.id)
   )
 
   if (!currentState) {
@@ -21,7 +21,7 @@ const DetailPopupCommand: (DetailCommandProps) => JSX.Element = ({
     <div className="detail-command">
       <div>{command.name}</div>
       <div>
-        {currentState} {command.unite}
+        {currentState.currentValue} {command.unite}
       </div>
     </div>
   )

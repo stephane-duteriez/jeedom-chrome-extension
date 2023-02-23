@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider, useQuery } from "react-query"
 import ReactDOM from "react-dom"
 import {
   Equipment,
-  fetchJeedomData,
+  fetchJeedomDataJSONRPC,
   JeedomObject,
   jeedomUrl,
 } from "../utils/api"
@@ -27,7 +27,7 @@ const ListObjects: React.FC<{}> = () => {
   const [selectEquipment, setSelectEquipment] = useState<Equipment | null>(null)
   const { data: jeedomData, isLoading } = useQuery<JeedomObject[]>(
     "FETCH_ALL",
-    () => fetchJeedomData()
+    () => fetchJeedomDataJSONRPC()
   )
   if (isLoading) {
     return (
