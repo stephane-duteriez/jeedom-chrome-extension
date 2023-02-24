@@ -1,7 +1,9 @@
 import { subTypeCommands, typeCommands } from "../utils/api"
 import { setBadge } from "../utils/badge"
 import {
+  getStoreConnectionInfo,
   getStoredCommandBadge,
+  setStoreConnectionInfo,
   setStoredCommandBadge,
   setStoredCommandForPopup,
 } from "../utils/storage"
@@ -18,6 +20,12 @@ chrome.runtime.onInstalled.addListener(() => {
   })
 
   setStoredCommandForPopup([])
+
+  getStoreConnectionInfo().then((connectionInfo) => {
+    if (!connectionInfo)
+      setStoreConnectionInfo({ urlServerJeedom: "", apiKey: "" })
+  })
+
   // setStoredOption({ tempScale: "metric", homeCity: "", hasAutoOverlay: false })
 
   chrome.alarms.create({

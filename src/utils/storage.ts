@@ -1,8 +1,9 @@
-import { Command } from "./api"
+import { Command, ConnectionInfo } from "./api"
 
 export interface LocalStorage {
   cmdBadge?: Command
   cmdForPopup?: Command[]
+  connectionInfo?: ConnectionInfo
 }
 
 export type LocalStorageKeys = keyof LocalStorage
@@ -45,6 +46,28 @@ export function getStoredCommandForPopup(): Promise<Command[]> {
   return new Promise((resolve) => {
     chrome.storage.local.get(keys, (res: LocalStorage) => {
       resolve(res.cmdForPopup ?? null)
+    })
+  })
+}
+
+export function getStoreConnectionInfo(): Promise<ConnectionInfo> {
+  const keys: LocalStorageKeys[] = ["connectionInfo"]
+  return new Promise((resolve) => {
+    chrome.storage.local.get(keys, (res: LocalStorage) => {
+      resolve(res.connectionInfo ?? null)
+    })
+  })
+}
+
+export function setStoreConnectionInfo(
+  connectionInfo: ConnectionInfo
+): Promise<void> {
+  const vals: LocalStorage = {
+    connectionInfo,
+  }
+  return new Promise((resolve) => {
+    chrome.storage.local.set(vals, () => {
+      resolve()
     })
   })
 }

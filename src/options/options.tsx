@@ -1,14 +1,15 @@
-import React, { useState } from "react"
-import { QueryClient, QueryClientProvider, useQuery } from "react-query"
-import ReactDOM from "react-dom"
+import React, { useEffect, useState } from "react"
 import {
-  Equipment,
-  fetchJeedomDataJSONRPC,
-  JeedomObject,
-  jeedomUrl,
-} from "../utils/api"
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+  useQueryClient,
+} from "react-query"
+import ReactDOM from "react-dom"
+import { Equipment, fetchJeedomDataJSONRPC, JeedomObject } from "../utils/api"
 import {
   AnchorButton,
+  Button,
   FormGroup,
   InputGroup,
   Spinner,
@@ -21,37 +22,52 @@ import "./options.css"
 import ObjectOptionComponent from "../components/ObjectOptionComponent"
 import DetailObject from "../components/DetailOptionObject"
 import DetailEquipment from "../components/DetailOptionEquipment"
+import {
+  getStoreConnectionInfo,
+  setStoreConnectionInfo,
+} from "../utils/storage"
 
 const ListObjects: React.FC<{}> = () => {
   const [openObject, setOpenObject] = useState<JeedomObject | null>(null)
   const [selectEquipment, setSelectEquipment] = useState<Equipment | null>(null)
+  const [urlServerJeedom, setUrlServerJeedom] = useState<string>("")
+  const [apiKey, setApiKey] = useState<string>("")
+  const queryClient = useQueryClient()
   const { data: jeedomData, isLoading } = useQuery<JeedomObject[]>(
     "FETCH_ALL",
-    () => fetchJeedomDataJSONRPC()
+    () => fetchJeedomDataJSONRPC(),
+    { enabled: !!urlServerJeedom && !!apiKey, initialData: [] }
   )
-  if (isLoading) {
-    return (
-      <div
-        style={{
-          display: "block",
-          width: "100%",
-          padding: 30,
-        }}
-      >
-        <Spinner size={SpinnerSize.STANDARD} />
-      </div>
-    )
-  }
+
+  useEffect(() => {
+    getStoreConnectionInfo().then((connectionInfo) => {
+      if (!connectionInfo) return
+      const { apiKey, urlServerJeedom } = connectionInfo
+      setApiKey(apiKey)
+      setUrlServerJeedom(urlServerJeedom)
+      queryClient.invalidateQueries("FETCH_ALL")
+    })
+  }, [])
 
   const handleChangeOpenObject = (jObject: JeedomObject) => {
     setOpenObject(jObject)
     setSelectEquipment(null)
   }
 
+  const handleChangeUrl = (event) => {
+    setUrlServerJeedom(event.target.value)
+    setStoreConnectionInfo({ apiKey, urlServerJeedom: event.target.value })
+  }
+
+  const handleChangeApiKey = (event) => {
+    setApiKey(event.target.value)
+    setStoreConnectionInfo({ apiKey: event.target.value, urlServerJeedom })
+  }
+
   return (
     <div className="option-container">
       <AnchorButton
-        href={jeedomUrl}
+        href={urlServerJeedom}
         target="_blank"
         text="Mon Jeedom"
         type="button"
@@ -59,31 +75,65 @@ const ListObjects: React.FC<{}> = () => {
       <h1 className="center">Jeedom extension</h1>
       <h2>Configuration</h2>
       <FormGroup
-        helperText="url serveur jeedom"
+        helperText="url de votre serveur jeedom"
         label="serveur jeedom"
         labelFor="url-input"
         labelInfo="(required)"
       >
-        <InputGroup id="text-input" placeholder="https:// ...." />
-      </FormGroup>
-      <h2>Objects</h2>
-      <div className="object-list">
-        {jeedomData.map((jObject) => (
-          <ObjectOptionComponent
-            key={jObject.id}
-            jObject={jObject}
-            setOpenObject={handleChangeOpenObject}
-            isOpen={false}
-          />
-        ))}
-      </div>
-      {openObject && openObject.eqLogics && (
-        <DetailObject
-          jObject={openObject}
-          setSelectEquipment={setSelectEquipment}
+        <InputGroup
+          id="url-input"
+          placeholder="https:// ...."
+          value={urlServerJeedom}
+          onChange={handleChangeUrl}
         />
+        <Button>Ping</Button>
+      </FormGroup>
+      <FormGroup
+        helperText="Apikey du serveur jeedom"
+        label="Apikey"
+        labelFor="api-key"
+        labelInfo="(required)"
+      >
+        <InputGroup
+          id="api-key"
+          placeholder="api-key-jeedom"
+          value={apiKey}
+          onChange={handleChangeApiKey}
+        />
+      </FormGroup>
+      {isLoading && (
+        <div
+          style={{
+            display: "block",
+            width: "100%",
+            padding: 30,
+          }}
+        >
+          <Spinner size={SpinnerSize.STANDARD} />
+        </div>
       )}
-      {selectEquipment && <DetailEquipment equipment={selectEquipment} />}
+      {!isLoading && (
+        <>
+          <h2>Objects</h2>
+          <div className="object-list">
+            {jeedomData.map((jObject) => (
+              <ObjectOptionComponent
+                key={jObject.id}
+                jObject={jObject}
+                setOpenObject={handleChangeOpenObject}
+                isOpen={false}
+              />
+            ))}
+          </div>
+          {openObject && openObject.eqLogics && (
+            <DetailObject
+              jObject={openObject}
+              setSelectEquipment={setSelectEquipment}
+            />
+          )}
+          {selectEquipment && <DetailEquipment equipment={selectEquipment} />}
+        </>
+      )}
     </div>
   )
 }

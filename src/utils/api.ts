@@ -1,10 +1,7 @@
 // fetch data from jeedom
 
 import { JSONRPCClient } from "json-rpc-2.0"
-import { jeedomUrl, apiKey } from "../local"
-
-export { jeedomUrl }
-const baseUrl = `${jeedomUrl}/core/api/jeeApi.php?apikey=${apiKey}`
+import { getStoreConnectionInfo } from "./storage"
 
 export enum subTypeCommands {
   "NUMERIC" = "numeric",
@@ -56,17 +53,16 @@ export interface JeedomObject {
   eqLogics: Equipment[]
 }
 
-const fetchJeedomData = async (): Promise<JeedomObject[]> => {
-  const res = await fetch(`${baseUrl}&type=fullData`)
-  if (!res.ok) {
-    throw new Error("Error while fetching jeedom data")
-  }
-
-  const data = await res.json()
-  return data
+export interface ConnectionInfo {
+  urlServerJeedom: string
+  apiKey: string
 }
 
-const client = new JSONRPCClient((jsonRPCRequest = {}) => {
+const client = new JSONRPCClient(async (jsonRPCRequest = {}) => {
+  const connectionInfo = await getStoreConnectionInfo()
+  if (!connectionInfo) return
+
+  const { apiKey, urlServerJeedom } = connectionInfo
   jsonRPCRequest = {
     ...jsonRPCRequest,
     params: {
@@ -74,7 +70,7 @@ const client = new JSONRPCClient((jsonRPCRequest = {}) => {
       apikey: apiKey,
     },
   }
-  return fetch(`${jeedomUrl}/core/api/jeeApi.php`, {
+  return fetch(`${urlServerJeedom}/core/api/jeeApi.php`, {
     method: "POST",
     body: JSON.stringify(jsonRPCRequest),
   }).then((response) => {
