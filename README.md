@@ -31,3 +31,24 @@
 - Folders get flattened, static references to images from HTML do not need to be relative (i.e. `icon.png` instead of `../static/icon.png`)
 - Importing local ts/tsx/css files should be relative, since Webpack will build a dependancy graph using these paths
 - Update the manifest file as per usual for chrome related permissions, references to files in here should also be flattened and not be relative
+
+# Jeedom Chrome extension
+
+## Description
+
+- Show data from your jeedom instance as a badge, or in a popup.
+
+## Technical background
+
+- Chrome forbid the use of the note secure http request, so there need to be a https link to your jeedom server. (Jeedom market place offer the service for a fee)
+- You will need the url to access the server, and the api-key of the jeedom instance
+- the popup refresh when you open it, the badge refresh every minutes
+
+## ToDo
+
+- use \* for to hide the api-key?
+- setting for refresh rate
+- jeedom action in the popup
+- button to test api-key
+- show error message if network connection doesn’t work
+- improve design
