@@ -24,7 +24,7 @@ const DetailOptionEquipment: (EquipmentProps) => JSX.Element = ({
       setCmdBadge(cmdBadge)
     })
     getStoredCommandForPopup().then((cmdForPopup) => {
-      setCmdForPopup(cmdForPopup)
+      setCmdForPopup(cmdForPopup || [])
     })
   }, [])
 
@@ -51,7 +51,7 @@ const DetailOptionEquipment: (EquipmentProps) => JSX.Element = ({
             command={command}
             selectedForBadge={cmdBadge?.id === command.id}
             selectedForPopup={
-              cmdForPopup.find((cmd) => cmd.id === command.id) ? true : false
+              cmdForPopup?.find((cmd) => cmd.id === command.id) ? true : false
             }
             setCmdBadge={setCmdBadge}
             addCmdForPopup={handleAddCommandForPopup}
