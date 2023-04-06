@@ -1,4 +1,4 @@
-import { Command, ConnectionInfo } from "./api"
+import { Command, ConnectionInfo } from "./typeStorage"
 
 export interface LocalStorage {
   cmdBadge?: Command
@@ -54,7 +54,7 @@ export function getStoreConnectionInfo(): Promise<ConnectionInfo> {
   const keys: LocalStorageKeys[] = ["connectionInfo"]
   return new Promise((resolve) => {
     chrome.storage.local.get(keys, (res: LocalStorage) => {
-      resolve(res.connectionInfo ?? null)
+      resolve(res.connectionInfo ?? { urlServerJeedom: "", apiKey: "" })
     })
   })
 }

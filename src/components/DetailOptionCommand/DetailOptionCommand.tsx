@@ -1,7 +1,7 @@
 import "./DetailOptionCommand.css"
 import { Switch } from "@blueprintjs/core"
 import React, { BaseSyntheticEvent } from "react"
-import { Command, typeCommands } from "../../utils/api"
+import { Command, typeCommands } from "../../utils/typeStorage"
 import {
   setStoredCommandBadge,
   setStoredCommandForPopup,

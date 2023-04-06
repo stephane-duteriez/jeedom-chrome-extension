@@ -4,7 +4,7 @@ import "@blueprintjs/icons/lib/css/blueprint-icons.css"
 import React, { useEffect, useState } from "react"
 import ReactDOM from "react-dom"
 import { QueryClient, QueryClientProvider } from "react-query"
-import { Command } from "../utils/api"
+import { Command } from "../utils/typeStorage"
 import {
   getStoreConnectionInfo,
   getStoredCommandForPopup,

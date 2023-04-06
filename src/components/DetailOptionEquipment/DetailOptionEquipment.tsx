@@ -2,7 +2,7 @@ import "./DetailOptionEquipment.css"
 import { Card } from "@blueprintjs/core"
 import React, { useEffect, useState } from "react"
 import { useQuery } from "react-query"
-import { Command, Equipment } from "../../utils/api"
+import { Command, Equipment } from "../../utils/typeStorage"
 import {
   getStoredCommandBadge,
   getStoredCommandForPopup,

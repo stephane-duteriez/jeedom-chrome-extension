@@ -1,6 +1,6 @@
 import React from "react"
 import { Card } from "@blueprintjs/core"
-import { Equipment, JeedomObject } from "../../utils/api"
+import { Equipment, JeedomObject } from "../../utils/typeStorage"
 import "./DetailOptionObject.css"
 
 interface DetailObjectProps {

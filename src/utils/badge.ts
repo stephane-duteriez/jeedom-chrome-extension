@@ -1,4 +1,5 @@
-import { Command, fetchCommandeJSONRPC } from "./api"
+import { fetchCommandeJSONRPC } from "./api"
+import { Command } from "./typeStorage"
 
 const setBadge = (cmd: Command): void => {
   fetchCommandeJSONRPC(cmd.id).then((data) => {

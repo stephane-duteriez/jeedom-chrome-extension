@@ -1,7 +1,8 @@
 import "./DetailPopupCommand.css"
 import React from "react"
-import { Command, fetchCommandeJSONRPC } from "../../utils/api"
+import { fetchCommandeJSONRPC } from "../../utils/api"
 import { useQuery } from "react-query"
+import { Command } from "../../utils/typeStorage"
 
 interface DetailCommandProps {
   command: Command

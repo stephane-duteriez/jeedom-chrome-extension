@@ -3,7 +3,7 @@ import { Card, Classes, Elevation, Overlay } from "@blueprintjs/core"
 
 import classNames from "classnames"
 import React, { useState } from "react"
-import { JeedomObject } from "../../utils/api"
+import { JeedomObject } from "../../utils/typeStorage"
 
 export interface ObjectComponentProps {
   jObject: JeedomObject

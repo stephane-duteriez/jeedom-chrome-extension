@@ -1,4 +1,4 @@
-import { subTypeCommands, typeCommands } from "../utils/api"
+import { subTypeCommands, typeCommands } from "../utils/typeStorage"
 import { setBadge } from "../utils/badge"
 import {
   getStoreConnectionInfo,
@@ -7,9 +7,9 @@ import {
   setStoredCommandBadge,
   setStoredCommandForPopup,
 } from "../utils/storage"
-
+console.log("background.ts")
 chrome.runtime.onInstalled.addListener(() => {
-  // set default value in local storage
+  // // set default value in local storage
   setStoredCommandBadge({
     id: "1631",
     name: "",
@@ -26,8 +26,6 @@ chrome.runtime.onInstalled.addListener(() => {
       setStoreConnectionInfo({ urlServerJeedom: "", apiKey: "" })
   })
 
-  // setStoredOption({ tempScale: "metric", homeCity: "", hasAutoOverlay: false })
-
   chrome.alarms.create({
     periodInMinutes: 1,
   })
@@ -35,7 +33,7 @@ chrome.runtime.onInstalled.addListener(() => {
 
 chrome.alarms.onAlarm.addListener(() => {
   getStoredCommandBadge().then((cmdBadge) => {
-    if (!cmdBadge.id) {
+    if (!cmdBadge?.id) {
       return
     }
     setBadge(cmdBadge)

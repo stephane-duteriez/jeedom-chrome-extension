@@ -6,7 +6,7 @@ import {
   useQueryClient,
 } from "react-query"
 import ReactDOM from "react-dom"
-import { Equipment, fetchJeedomDataJSONRPC, JeedomObject } from "../utils/api"
+import { fetchJeedomDataJSONRPC } from "../utils/api"
 import {
   AnchorButton,
   Button,
@@ -26,6 +26,7 @@ import {
   getStoreConnectionInfo,
   setStoreConnectionInfo,
 } from "../utils/storage"
+import { Equipment, JeedomObject } from "../utils/typeStorage"
 
 const ListObjects: React.FC<{}> = () => {
   const [openObject, setOpenObject] = useState<JeedomObject | null>(null)
