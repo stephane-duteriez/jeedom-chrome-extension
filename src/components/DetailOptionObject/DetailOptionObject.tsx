@@ -1,23 +1,29 @@
 import React from "react"
-import { Card } from "@blueprintjs/core"
+import { Card, PanelProps } from "@blueprintjs/core"
 import { Equipment, JeedomObject } from "../../utils/typeStorage"
 import "./DetailOptionObject.css"
+import DetailOptionEquipment from "../DetailOptionEquipment"
 
 interface DetailObjectProps {
   jObject: JeedomObject
-  setSelectEquipment: (eq: Equipment) => void
 }
-const DetailOptionObject: (DetailObjectProps) => JSX.Element = ({
+const DetailOptionObject = ({
   jObject,
-  setSelectEquipment,
-}) => {
+  openPanel,
+}: PanelProps<DetailObjectProps>): JSX.Element => {
   return (
     <div className="equipment-list">
       {jObject.eqLogics.map((equipment) => (
         <Card
           key={equipment.id}
           className="equipment-card"
-          onClick={() => setSelectEquipment(equipment)}
+          onClick={() =>
+            openPanel({
+              props: { equipment },
+              renderPanel: DetailOptionEquipment,
+              title: equipment.name,
+            })
+          }
         >
           {equipment.name}
         </Card>

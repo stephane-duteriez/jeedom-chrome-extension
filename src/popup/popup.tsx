@@ -31,6 +31,7 @@ const App: React.FC<{}> = () => {
       <div>
         {urlServerJeedom && (
           <AnchorButton
+            className="popup-btn-url"
             href={urlServerJeedom}
             target="_blank"
             text="Mon Jeedom"

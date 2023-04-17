@@ -1,9 +1,6 @@
 .equipment-list {
   display: flex;
-}
-
-.equipment-list div {
-  flex: 1;
+  flex-wrap: wrap;
 }
 
 .equipment-card {

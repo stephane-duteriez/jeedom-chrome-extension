@@ -1,0 +1,16 @@
+
+.option-button-ping {
+    max-height: 2em;
+    
+}
+
+[hidden].option-button-ping {
+    visibility: hidden;
+}
+
+.option-input-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap
+}

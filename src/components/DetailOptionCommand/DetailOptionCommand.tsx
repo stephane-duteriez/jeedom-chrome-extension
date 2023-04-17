@@ -8,6 +8,17 @@ import {
 } from "../../utils/storage"
 import { setBadge } from "../../utils/badge"
 
+export const DetailOptionHeader = (): JSX.Element => {
+  return (
+    <div className="detail-command">
+      <div>Command</div>
+      <div>State</div>
+      <div>Badge</div>
+      <div>Popup</div>
+    </div>
+  )
+}
+
 interface DetailCommandProps {
   command: Command
   selectedForBadge: boolean

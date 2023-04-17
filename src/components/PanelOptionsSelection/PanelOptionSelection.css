@@ -1,0 +1,9 @@
+.object-panel-stack {
+    height: 500px;
+    margin: 2em;
+}
+
+.object-list {
+    display: flex;
+    flex-wrap: wrap;
+}

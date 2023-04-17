@@ -1,7 +1,6 @@
 import "./DetailOptionEquipment.css"
 import { Card } from "@blueprintjs/core"
 import React, { useEffect, useState } from "react"
-import { useQuery } from "react-query"
 import { Command, Equipment } from "../../utils/typeStorage"
 import {
   getStoredCommandBadge,
@@ -9,6 +8,7 @@ import {
   setStoredCommandForPopup,
 } from "../../utils/storage"
 import DetailOptionCommand from "../DetailOptionCommand"
+import { DetailOptionHeader } from "../DetailOptionCommand/DetailOptionCommand"
 
 interface EquipmentProps {
   equipment: Equipment
@@ -44,21 +44,24 @@ const DetailOptionEquipment: (EquipmentProps) => JSX.Element = ({
 
   return (
     <Card className="card-equipment">
-      {equipment.cmds.map((command) => {
-        return (
-          <DetailOptionCommand
-            key={`equipment-${command.id}`}
-            command={command}
-            selectedForBadge={cmdBadge?.id === command.id}
-            selectedForPopup={
-              cmdForPopup?.find((cmd) => cmd.id === command.id) ? true : false
-            }
-            setCmdBadge={setCmdBadge}
-            addCmdForPopup={handleAddCommandForPopup}
-            removeCmdPopup={handleRemoveCommandForPopup}
-          />
-        )
-      })}
+      <DetailOptionHeader />
+      {equipment.cmds
+        .filter((command) => command.logicalId !== "refresh")
+        .map((command) => {
+          return (
+            <DetailOptionCommand
+              key={`equipment-${command.id}`}
+              command={command}
+              selectedForBadge={cmdBadge?.id === command.id}
+              selectedForPopup={
+                cmdForPopup?.find((cmd) => cmd.id === command.id) ? true : false
+              }
+              setCmdBadge={setCmdBadge}
+              addCmdForPopup={handleAddCommandForPopup}
+              removeCmdPopup={handleRemoveCommandForPopup}
+            />
+          )
+        })}
     </Card>
   )
 }

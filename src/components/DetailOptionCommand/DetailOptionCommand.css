@@ -10,3 +10,7 @@
 .detail-command div:nth-child(2) {
   flex: 1;
 }
+
+.detail-command > div {
+  padding-right: 1em;
+}

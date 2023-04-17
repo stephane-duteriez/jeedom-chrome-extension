@@ -1,8 +1,7 @@
 import "./ObjectOptionComponent.css"
-import { Card, Classes, Elevation, Overlay } from "@blueprintjs/core"
+import { Card, Elevation } from "@blueprintjs/core"
 
-import classNames from "classnames"
-import React, { useState } from "react"
+import React from "react"
 import { JeedomObject } from "../../utils/typeStorage"
 
 export interface ObjectComponentProps {
@@ -10,21 +9,13 @@ export interface ObjectComponentProps {
   isOpen: boolean
   setOpenObject: (id: JeedomObject | null) => void
 }
-const OVERLAY_EXAMPLE_CLASS = "overlay-transition"
-// const OVERLAY_TALL_CLASS = "docs-overlay-example-tall"
 
 const ObjectOptionComponent: (ObjectComponentProps) => JSX.Element = ({
   jObject,
-  isOpen,
   setOpenObject,
 }) => {
   if (jObject.eqLogics.length === 0) return null
-  const classes = classNames(
-    Classes.CARD,
-    Classes.ELEVATION_4,
-    OVERLAY_EXAMPLE_CLASS
-    // { [OVERLAY_TALL_CLASS]: this.state.useTallContent }
-  )
+
   return (
     <>
       <Card

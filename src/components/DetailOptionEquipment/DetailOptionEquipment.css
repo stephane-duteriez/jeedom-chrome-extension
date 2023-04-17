@@ -1,3 +1,7 @@
 .card-equipment {
   min-width: 70%;
 }
+
+.card-equipment div:first-child {
+  margin-bottom: 1em;
+}
